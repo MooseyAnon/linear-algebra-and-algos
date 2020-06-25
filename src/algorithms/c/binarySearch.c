@@ -137,8 +137,8 @@ int main(void) {
         {100, 6, 13, 19, 9},
     };
 
-    max_vector *ptr = find_col_peak(*arr, 5, 3);
     printf("the local peak is at %d, %d", ptr->row_index, ptr->col_index);
+    max_vector *ptr = peak_finder(*arr, 5, 0, 5);
     free(ptr);
     return 0;
 }
