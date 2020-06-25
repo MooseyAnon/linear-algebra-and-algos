@@ -31,7 +31,7 @@ int binary_search(int arr[], int first, int last, int item) {
 }
 
 
-max_vector * find_col_peak(int *arr, int rows, int col){
+max_vector find_col_peak(int *arr, int rows, int col){
     /* Find the peak of a column.
     
     This function treats a 2D array like a 1D array and
@@ -46,30 +46,27 @@ max_vector * find_col_peak(int *arr, int rows, int col){
     */
 
     // we want a vector to save the max number and its index
-    max_vector *vector = malloc(sizeof(max_vector));
+    max_vector vector;
     
-    if (vector) {
-        // set max to the first item of the column
-        vector->col_index = 0;
-        vector->index_value = *(col + arr);
-    
-        // loop through the rest of the column
-        for (int i=1; i < rows; i++){
-            int next_number = *((i * rows + arr) + col);
-            if (next_number > vector->index_value){
-                vector->col_index = i;
-                vector->index_value = next_number;
-            }
+    // set max to the first item of the column
+    vector.col_index = 0;
+    vector.index_value = *(col + arr);
+
+    // loop through the rest of the column
+    for (int i=1; i < rows; i++){
+        int next_number = *((i * rows + arr) + col);
+        if (next_number > vector.index_value){
+            vector.col_index = i;
+            vector.index_value = next_number;
         }
-        printf("the max value is %d and it is at index %d\n",
-            vector->index_value, vector->col_index);
-        return vector;
     }
-    return NULL;
+    printf("the max value is %d and it is at index %d\n",
+        vector.index_value, vector.col_index);
+    return vector;
 }
 
 
-max_vector * peak_finder(int *matrix, int rows, int first, int last){
+max_vector peak_finder(int *matrix, int rows, int first, int last){
     /* Find a local 2D peak.
 
     NOTE: Expects a matrix of size row x col
@@ -78,40 +75,35 @@ max_vector * peak_finder(int *matrix, int rows, int first, int last){
     (i, j) >= (i, j + 1), (i, j - 1), (i + 1, j) (i - 1, j)
     */
 
-    max_vector *vector;
+    max_vector vector;
     
     int middle = last / 2;
     vector = find_col_peak(matrix, rows, middle);
 
-    if (vector){
-        if (middle == first || middle == last){
-            vector->row_index = middle;
+    if (middle == first || middle == last){
+        vector.row_index = middle;
+        return vector;
+    }
+
+    if (last > first) {
+        int current = *((vector.col_index * rows) + matrix + middle);
+        int one_less = *((vector.col_index * rows) + matrix + middle - 1);
+        int one_more = *((vector.col_index * rows) + matrix + middle + 1);
+
+        if (one_less <= current >= one_more) {
+            vector.row_index = middle;
             return vector;
         }
 
-        if (last > first) {
-            int current = *((vector->col_index * rows) + matrix + middle);
-            int one_less = *((vector->col_index * rows) + matrix + middle - 1);
-            int one_more = *((vector->col_index * rows) + matrix + middle + 1);
-
-            if (one_less <= current >= one_more) {
-                vector->row_index = middle;
-                return vector;
-            }
-
-            // if current is not a peak we can free the vector
-            if (one_less > current){
-                free(vector);
-                return peak_finder(matrix, rows, first, middle - 1);
-            } else {
-                free(vector);
-                return peak_finder(matrix, rows, middle + 1, last);
-            } 
-        }
-        vector->row_index = middle;
-        return vector;
+        // if current is not a peak we can free the vector
+        if (one_less > current){
+            return peak_finder(matrix, rows, first, middle - 1);
+        } else {
+            return peak_finder(matrix, rows, middle + 1, last);
+        } 
     }
-    return NULL;
+    vector.row_index = middle;
+    return vector;
 }
 
 
@@ -137,8 +129,7 @@ int main(void) {
         {100, 6, 13, 19, 9},
     };
 
-    printf("the local peak is at %d, %d", ptr->row_index, ptr->col_index);
-    max_vector *ptr = peak_finder(*arr, 5, 0, 5);
-    free(ptr);
+    max_vector ptr = peak_finder(*arr, 5, 0, 5);
+    printf("the local peak is at %d, %d", ptr.row_index, ptr.col_index);
     return 0;
 }
