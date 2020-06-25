@@ -54,7 +54,7 @@ max_vector find_col_peak(int *arr, int rows, int col){
 
     // loop through the rest of the column
     for (int i=1; i < rows; i++){
-        int next_number = *((i * rows + arr) + col);
+        int next_number = arr[i * rows + col];
         if (next_number > vector.index_value){
             vector.col_index = i;
             vector.index_value = next_number;
@@ -86,9 +86,9 @@ max_vector peak_finder(int *matrix, int rows, int first, int last){
     }
 
     if (last > first) {
-        int current = *((vector.col_index * rows) + matrix + middle);
-        int one_less = *((vector.col_index * rows) + matrix + middle - 1);
-        int one_more = *((vector.col_index * rows) + matrix + middle + 1);
+        int current = matrix[vector.col_index * rows + middle];
+        int one_less = matrix[vector.col_index * rows + middle - 1];
+        int one_more = matrix[vector.col_index * rows + middle + 1];
 
         if (one_less <= current >= one_more) {
             vector.row_index = middle;
