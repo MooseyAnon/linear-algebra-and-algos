@@ -34,6 +34,7 @@ then same again for all items k in floor(matrix columns / 2):
     - (2, 0) -> (0, 2)
 */
 
+#include <stdio.h>
 
 void print_matrix(int *matrix, int cols) {
     /* Print a given matrix */
