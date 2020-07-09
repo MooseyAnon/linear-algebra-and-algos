@@ -20,6 +20,9 @@ def in_place_quicksort(array, first, last):
     essentially used as 'walled gardens' so we can restrict the area of
     the array the algorithm is sorting on each recursion.
 
+    NOTE: THIS DOES NOT WORK FOR ARRAYS WITH MORE THAN 2 DUPLICATES, FIX AND
+    TEST.
+
     :param list array: an array
     :param int first: the first item of a particular subsection of the array
     :param int last: the last item of a particular subsection of the array

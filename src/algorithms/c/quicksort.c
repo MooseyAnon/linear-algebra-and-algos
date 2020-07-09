@@ -4,6 +4,7 @@
 int quicksort_inner(int *arr, int first, int last);
 
 void print_array(int *arr, int length) {
+    /* Pretty print an array */
     for (int i = 0; i <= length; i++) {
         printf("%d, ", arr[i]);
     }
@@ -12,6 +13,11 @@ void print_array(int *arr, int length) {
 
 
 int * in_place_quicksort(int *arr, int first, int last) {
+    /* A recursive in-place quicksort 
+
+    NOTE: THIS DOES NOT WORK FOR ARRAYS WITH MORE THAN 2 DUPLICATES, FIX AND
+    TEST.
+    */
     if (first < last) {
         int piv = quicksort_inner(arr, first, last);
 
@@ -24,6 +30,7 @@ int * in_place_quicksort(int *arr, int first, int last) {
 
 
 void swap_indexes(int *arr, int item_1, int item_2) {
+    /* Swap the values of two indexes in an array. */
     int tmp = arr[item_1];
     arr[item_1] = arr[item_2];
     arr[item_2] = tmp;
@@ -31,6 +38,7 @@ void swap_indexes(int *arr, int item_1, int item_2) {
 
 
 int quicksort_inner(int *arr, int first, int last) {
+    /* Sort some subsection of an array. */
     int pivot = (first + last) / 2;
     int counter = 0;
     int last_swap = 0;
